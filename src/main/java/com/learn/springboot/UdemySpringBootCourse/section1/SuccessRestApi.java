@@ -1,9 +1,12 @@
 package com.learn.springboot.UdemySpringBootCourse.section1;
 
+import com.learn.springboot.UdemySpringBootCourse.common.response.ResponseHandler;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +39,7 @@ public class SuccessRestApi {
 
     @GetMapping("/fetchUser")
     @Operation(summary = "fetchUser")
-    public String fetchUser(@RequestParam String page){
+    public ResponseEntity<Object> fetchUser(@RequestParam String page){
 
         Response response = given()
                 .contentType(ContentType.JSON)
@@ -46,7 +49,9 @@ public class SuccessRestApi {
                 .then()
                 .extract().response();
 
-        return response.asPrettyString();
+
+
+        return ResponseHandler.responseBuilder("Data Received", HttpStatus.OK,response.asPrettyString());
     }
 
 }
